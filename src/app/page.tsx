@@ -313,17 +313,17 @@ export default function Home() {
         {/* 이력 페이지 */}
         {page === "history" && (
           <section className="bg-white rounded-lg border border-zinc-200 p-6">
-            <h2 className="text-base font-semibold text-zinc-700 mb-4">
+            <h2 className="text-lg font-bold text-zinc-900 mb-5">
               월별 처리 이력
             </h2>
             {uploads.length === 0 ? (
-              <p className="text-zinc-400 text-sm">저장된 이력이 없습니다.</p>
+              <p className="text-zinc-500 text-base">저장된 이력이 없습니다.</p>
             ) : (
-              <table className="w-full text-sm">
+              <table className="w-full text-base">
                 <thead className="bg-zinc-100">
                   <tr>
                     {["년월", "파일명", "업로드일", "일반경비", "금융수수료", "영업외수익", "상태", ""].map((h) => (
-                      <th key={h} className="px-4 py-2.5 text-left font-bold text-zinc-700 border-b border-zinc-200">
+                      <th key={h} className="px-4 py-3 text-left font-bold text-zinc-900 border-b-2 border-zinc-300 whitespace-nowrap">
                         {h}
                       </th>
                     ))}
@@ -331,43 +331,45 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {uploads.map((u) => (
-                    <tr key={u.id} className="hover:bg-zinc-50 border-b border-zinc-100">
-                      <td className="px-4 py-2.5 font-medium">{u.year_month}</td>
-                      <td className="px-4 py-2.5 text-zinc-600">{u.file_name}</td>
-                      <td className="px-4 py-2.5 text-zinc-500">
+                    <tr key={u.id} className="hover:bg-blue-50 border-b border-zinc-200">
+                      <td className="px-4 py-3 font-bold text-zinc-900 whitespace-nowrap">{u.year_month}</td>
+                      <td className="px-4 py-3 text-zinc-800">{u.file_name}</td>
+                      <td className="px-4 py-3 text-zinc-700 whitespace-nowrap">
                         {new Date(u.uploaded_at).toLocaleDateString("ko-KR")}
                       </td>
-                      <td className="px-4 py-2.5 text-right font-mono">
-                        {u.general_count}건 / {(u.general_total || 0).toLocaleString()}
+                      <td className="px-4 py-3 text-right font-mono text-zinc-800">
+                        <span className="font-bold">{u.general_count}</span>건 / {(u.general_total || 0).toLocaleString()}원
                       </td>
-                      <td className="px-4 py-2.5 text-right font-mono">
-                        {u.finance_count}건 / {(u.finance_total || 0).toLocaleString()}
+                      <td className="px-4 py-3 text-right font-mono text-zinc-800">
+                        <span className="font-bold">{u.finance_count}</span>건 / {(u.finance_total || 0).toLocaleString()}원
                       </td>
-                      <td className="px-4 py-2.5 text-right font-mono">
-                        {u.income_count}건 / {(u.income_total || 0).toLocaleString()}
+                      <td className="px-4 py-3 text-right font-mono text-zinc-800">
+                        <span className="font-bold">{u.income_count}</span>건 / {(u.income_total || 0).toLocaleString()}원
                       </td>
-                      <td className="px-4 py-2.5">
-                        <span className={`px-2 py-0.5 rounded text-xs ${
+                      <td className="px-4 py-3">
+                        <span className={`px-2.5 py-1 rounded text-sm font-medium ${
                           u.status === "completed"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
                         }`}>
                           {u.status === "completed" ? "완료" : u.status}
                         </span>
                       </td>
-                      <td className="px-4 py-2.5 flex gap-2">
-                        <button
-                          onClick={() => handleViewDetail(u.id)}
-                          className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded hover:bg-blue-100"
-                        >
-                          상세
-                        </button>
-                        <button
-                          onClick={() => handleDelete(u.id)}
-                          className="px-3 py-1 bg-red-50 text-red-600 text-xs font-medium rounded hover:bg-red-100"
-                        >
-                          삭제
-                        </button>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleViewDetail(u.id)}
+                            className="px-4 py-1.5 bg-blue-100 text-blue-700 text-sm font-bold rounded hover:bg-blue-200"
+                          >
+                            상세
+                          </button>
+                          <button
+                            onClick={() => handleDelete(u.id)}
+                            className="px-4 py-1.5 bg-red-100 text-red-700 text-sm font-bold rounded hover:bg-red-200"
+                          >
+                            삭제
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

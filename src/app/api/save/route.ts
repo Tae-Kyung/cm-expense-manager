@@ -16,6 +16,20 @@ export async function POST(request: Request) {
 
     const supabase = getSupabase();
 
+    // 0. 동일 year_month 데이터가 있으면 삭제 (중복 방지)
+    const { data: existing } = await supabase
+      .from("mgmt_uploads")
+      .select("id")
+      .eq("year_month", result.sheetName);
+
+    if (existing && existing.length > 0) {
+      // CASCADE로 transactions도 자동 삭제됨
+      await supabase
+        .from("mgmt_uploads")
+        .delete()
+        .eq("year_month", result.sheetName);
+    }
+
     // 1. uploads 레코드 생성
     const { data: upload, error: uploadError } = await supabase
       .from("mgmt_uploads")
