@@ -2,9 +2,10 @@
 
 import { useState, useCallback, useEffect } from "react";
 import type { TransformResult, Transaction, SummaryRow } from "@/lib/types";
+import AnalysisPage from "./analysis";
 
 type ViewTab = "general" | "finance" | "income" | "excluded" | "summary";
-type Page = "upload" | "history" | "detail";
+type Page = "upload" | "history" | "detail" | "analysis";
 
 interface Upload {
   id: string;
@@ -236,13 +237,14 @@ export default function Home() {
             [
               ["upload", "파일 업로드"],
               ["history", "월별 이력"],
+              ["analysis", "분석"],
             ] as const
           ).map(([key, label]) => (
             <button
               key={key}
               onClick={() => { setPage(key); setResult(null); setError(null); }}
               className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
-                page === key || (page === "detail" && key === "history")
+                page === key || (page === "detail" && key === "history") || (page === "analysis" && key === "analysis")
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-zinc-500 hover:text-zinc-700"
               }`}
@@ -431,6 +433,9 @@ export default function Home() {
             <ResultSection result={result} excluded={excluded} activeTab={activeTab} setActiveTab={setActiveTab} />
           </>
         )}
+
+        {/* 분석 페이지 */}
+        {page === "analysis" && <AnalysisPage />}
       </div>
     </div>
   );
