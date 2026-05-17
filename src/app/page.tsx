@@ -203,6 +203,24 @@ export default function Home() {
     }
   };
 
+  // 전체 삭제
+  const handleDeleteAll = async () => {
+    if (!confirm("모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return;
+
+    try {
+      const res = await fetch("/api/history", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deleteAll: true }),
+      });
+      if (res.ok) {
+        fetchHistory();
+      }
+    } catch {
+      // silent fail
+    }
+  };
+
   useEffect(() => {
     if (page === "history") {
       fetchHistory();
@@ -313,9 +331,19 @@ export default function Home() {
         {/* 이력 페이지 */}
         {page === "history" && (
           <section className="bg-white rounded-lg border border-zinc-200 p-6">
-            <h2 className="text-lg font-bold text-zinc-900 mb-5">
-              월별 처리 이력
-            </h2>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg font-bold text-zinc-900">
+                월별 처리 이력
+              </h2>
+              {uploads.length > 0 && (
+                <button
+                  onClick={handleDeleteAll}
+                  className="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-md hover:bg-red-700"
+                >
+                  전체 삭제
+                </button>
+              )}
+            </div>
             {uploads.length === 0 ? (
               <p className="text-zinc-500 text-base">저장된 이력이 없습니다.</p>
             ) : (
